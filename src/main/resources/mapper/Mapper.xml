@@ -18,7 +18,7 @@
         VALUES (#{metric}, #{tagsJson}, #{timestamp}, #{value})
     </insert>
 <!--    <insert id="SavePostLog">insert into test(id) values (2)</insert>-->
-    <select id="GetPostLog" resultType="com.course.pojo.PostLog">
+    <select id="GetPostLog" resultType="com.course.pojo.Log">
         select * from post
                  where metric = #{metric} and tags like #{instanceId};
     </select>

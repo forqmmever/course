@@ -5,6 +5,15 @@ public class MetricConstraint {
     private String metric;
     private String constraintType;
     private float value;
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     @Override
     public String toString() {
@@ -13,6 +22,7 @@ public class MetricConstraint {
                 ", metric='" + metric + '\'' +
                 ", constraintType='" + constraintType + '\'' +
                 ", value=" + value +
+                ", description='" + description + '\'' +
                 '}';
     }
 

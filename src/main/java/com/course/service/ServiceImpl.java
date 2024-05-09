@@ -1,12 +1,9 @@
 package com.course.service;
 
 import com.course.mapper.Mapper;
+import com.course.pojo.MetricConstraint;
 import com.course.pojo.PostLog;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
-import java.lang.annotation.Annotation;
 
 @org.springframework.stereotype.Service
 public class ServiceImpl implements Service{
@@ -18,21 +15,62 @@ public class ServiceImpl implements Service{
         this.mapper = mapper;
     }
 
-    public boolean SavePostLogPostLog(PostLog postLog) {
+
+    public boolean SaveLog(PostLog postLog){
         mapper.SavePostLog(postLog);
         return true;
     }
 
+    public boolean CheckRules(MetricConstraint metricConstraint, PostLog postLog){
+         String ConstraintType = metricConstraint.getConstraintType();
+         float ConstraintValue = metricConstraint.getValue();
+         String ConstraintDescription = metricConstraint.getDescription();
+
+         float value = postLog.getValue();
+
+         boolean flag = false;
+
+         switch (ConstraintType){
+             case "=":
+                 flag = (value == ConstraintValue);
+                 break;
+             case ">":
+                 flag = (value > ConstraintValue);
+                 break;
+             case "<":
+                 flag = (value < ConstraintValue);
+                 break;
+             case ">=":
+                 flag = (value >= ConstraintValue);
+                 break;
+             case "<=" :
+                 flag = (value <= ConstraintValue);
+                 break;
+         }
+        return flag;
+    }
+
+    public String SavePostLog(PostLog postLog) {
+        String metric = postLog.getMetric();
+        MetricConstraint constraint = mapper.GetMetricConstraint(metric);
+        if (constraint != null){
+            if (CheckRules(constraint,postLog))
+                return constraint.getDescription();
+        }
+        SaveLog(postLog);
+        return "";
+    }
+
     @Override
     public boolean GetPostLog(String metric, String instanceId) {
-        String keyword = "%" + instanceId + "%";
+        String keyword = "%\"" + instanceId + "\"%";
         System.out.println(mapper.GetPostLog(metric,keyword));
         return true;
     }
 
     @Override
-    public boolean GetMetricConstraint(String metric) {
-        return false;
+    public MetricConstraint GetMetricConstraint(String metric) {
+        return mapper.GetMetricConstraint(metric);
     }
 
 
