@@ -11,6 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @SpringBootTest
 class WebApplicationTests {
@@ -51,10 +56,21 @@ class WebApplicationTests {
             e.printStackTrace();
         }
     }
+
     @Test
-    public void tesSelect(){
+    public void tesSelect() {
 //        System.out.println(mapper.GetMetricConstraint("up"));
-        System.out.println(service.GetPostLog("node_load5","7273a1ea-0089-4674-b606-b1b8d809d866"));
-//        System.out.println(mapper.GetPostLog("node_load5","7273a1ea-0089-4674-b606-b1b8d809d866"));
+          System.out.println(service.GetPostLog("up", "7273a1ea-0089-4674-b606-b1b8d809d866"));
+//        System.out.println(mapper.GetWarningLogAll());
+    }
+
+    @Test
+    public void testTime() throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date startDate = sdf.parse("2024-04-17 13:55:00");
+        // 计算初始延迟（毫秒）
+        long initialDelay = startDate.getTime() - System.currentTimeMillis();
+        System.out.println(startDate.getTime());
+        System.out.println(initialDelay);
     }
 }

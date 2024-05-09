@@ -14,16 +14,23 @@
 <!--        </foreach>-->
 <!--    </insert>-->
     <insert id="SavePostLog" parameterType="com.course.pojo.PostLog">
-        INSERT INTO post (metric, tags, timestamp, value)
+        INSERT INTO postlog (metric, tags, timestamp, value)
         VALUES (#{metric}, #{tagsJson}, #{timestamp}, #{value})
     </insert>
-<!--    <insert id="SavePostLog">insert into test(id) values (2)</insert>-->
+    <insert id="SaveWarningLog" parameterType="com.course.pojo.Log">
+        INSERT INTO warninglog (metric, tags, timestamp, value,description,time)
+        VALUES (#{metric}, #{tagsJson}, #{timestamp}, #{value},#{description},#{time})
+    </insert>
+    <!--    <insert id="SavePostLog">insert into test(id) values (2)</insert>-->
     <select id="GetPostLog" resultType="com.course.pojo.Log">
-        select * from post
+        select * from postlog
                  where metric = #{metric} and tags like #{instanceId};
     </select>
     <select id="GetMetricConstraint" resultType="com.course.pojo.MetricConstraint">
         select * from MetricConstraint
                  where metric = #{metric};
+    </select>
+    <select id="GetWarningLogAll" resultType="com.course.pojo.Log">
+        select * from warninglog;
     </select>
 </mapper>

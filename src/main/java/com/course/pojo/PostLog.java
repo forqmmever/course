@@ -18,14 +18,9 @@ public class PostLog {
         this.value = value;
     }
 
-    public String getTagsJson() {
-        try {
+    public String getTagsJson() throws JsonProcessingException {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.writeValueAsString(tags);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     @Override

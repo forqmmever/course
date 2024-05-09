@@ -3,58 +3,62 @@ package com.course.service;
 import com.course.mapper.Mapper;
 import com.course.pojo.MetricConstraint;
 import com.course.pojo.PostLog;
+import com.course.pojo.WarningLog;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
+
 @org.springframework.stereotype.Service
-public class ServiceImpl implements Service{
+public class ServiceImpl implements Service {
 
     private Mapper mapper;
 
     @Autowired
-    public ServiceImpl(Mapper mapper){
+    public ServiceImpl(Mapper mapper) {
         this.mapper = mapper;
     }
 
 
-    public boolean SaveLog(PostLog postLog){
+    public boolean SaveLog(PostLog postLog) {
         mapper.SavePostLog(postLog);
         return true;
     }
 
-    public boolean CheckRules(MetricConstraint metricConstraint, PostLog postLog){
-         String ConstraintType = metricConstraint.getConstraintType();
-         float ConstraintValue = metricConstraint.getValue();
-         String ConstraintDescription = metricConstraint.getDescription();
+    public boolean CheckRules(MetricConstraint metricConstraint, PostLog postLog) {
+        String ConstraintType = metricConstraint.getConstraintType();
+        float ConstraintValue = metricConstraint.getValue();
+        String ConstraintDescription = metricConstraint.getDescription();
 
-         float value = postLog.getValue();
+        float value = postLog.getValue();
 
-         boolean flag = false;
+        boolean flag = false;
 
-         switch (ConstraintType){
-             case "=":
-                 flag = (value == ConstraintValue);
-                 break;
-             case ">":
-                 flag = (value > ConstraintValue);
-                 break;
-             case "<":
-                 flag = (value < ConstraintValue);
-                 break;
-             case ">=":
-                 flag = (value >= ConstraintValue);
-                 break;
-             case "<=" :
-                 flag = (value <= ConstraintValue);
-                 break;
-         }
+        switch (ConstraintType) {
+            case "=":
+                flag = (value == ConstraintValue);
+                break;
+            case ">":
+                flag = (value > ConstraintValue);
+                break;
+            case "<":
+                flag = (value < ConstraintValue);
+                break;
+            case ">=":
+                flag = (value >= ConstraintValue);
+                break;
+            case "<=":
+                flag = (value <= ConstraintValue);
+                break;
+        }
+        if (flag) SaveWarningLog(new WarningLog(postLog,ConstraintDescription,new Date()));
         return flag;
     }
 
     public String SavePostLog(PostLog postLog) {
         String metric = postLog.getMetric();
         MetricConstraint constraint = mapper.GetMetricConstraint(metric);
-        if (constraint != null){
-            if (CheckRules(constraint,postLog))
+        if (constraint != null) {
+            if (CheckRules(constraint, postLog))
                 return constraint.getDescription();
         }
         SaveLog(postLog);
@@ -64,7 +68,7 @@ public class ServiceImpl implements Service{
     @Override
     public boolean GetPostLog(String metric, String instanceId) {
         String keyword = "%\"" + instanceId + "\"%";
-        System.out.println(mapper.GetPostLog(metric,keyword));
+        System.out.println(mapper.GetPostLog(metric, keyword));
         return true;
     }
 
@@ -73,6 +77,11 @@ public class ServiceImpl implements Service{
         return mapper.GetMetricConstraint(metric);
     }
 
+    @Override
+    public boolean SaveWarningLog(WarningLog warningLog) {
+        mapper.SaveWarningLog(warningLog);
+        return true;
+    }
 
 
 }

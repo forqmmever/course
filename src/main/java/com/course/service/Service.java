@@ -2,6 +2,7 @@ package com.course.service;
 
 import com.course.pojo.MetricConstraint;
 import com.course.pojo.PostLog;
+import com.course.pojo.WarningLog;
 
 @org.springframework.stereotype.Service
 public interface Service {
@@ -10,4 +11,5 @@ public interface Service {
     public boolean GetPostLog(String metric,String instanceId);
     public MetricConstraint GetMetricConstraint(String metric);
 
+    public boolean SaveWarningLog(WarningLog warningLog);
 }
