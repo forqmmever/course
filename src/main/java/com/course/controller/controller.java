@@ -1,8 +1,10 @@
 package com.course.controller;
 
-import com.course.pojo.PostLog;
+import com.course.pojo.Log;
+//import com.course.pojo.PostLog;
 import com.course.pojo.PostResult;
 import com.course.service.Service;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +29,9 @@ public class controller {
 
     @PostMapping("/api/metric/put")
     @ResponseBody
-    public PostResult ReceiveMonitor(@RequestBody List<PostLog> postDataList) {
+    public PostResult ReceiveMonitor(@RequestBody List<Log> postDataList) throws JsonProcessingException {
         String result = "";
-        for (PostLog postData : postDataList) {
+        for (Log postData : postDataList) {
             String Rec = service.SavePostLog(postData);
             result += Rec ;
             DataCnt ++;

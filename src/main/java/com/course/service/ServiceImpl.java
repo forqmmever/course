@@ -1,10 +1,11 @@
 package com.course.service;
 
 import com.course.mapper.Mapper;
+import com.course.pojo.Log;
 import com.course.pojo.MetricConstraint;
-import com.course.pojo.PostLog;
-import com.course.pojo.WarningLog;
-import com.course.task.ScheduledTaskManager;
+//import com.course.pojo.PostLog;
+//import com.course.pojo.WarningLog;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -18,22 +19,15 @@ public class ServiceImpl implements Service {
     @Autowired
     private ScheduledTaskManager manager;
 
-//    @Autowired
-//    public ServiceImpl(Mapper mapper) {
-//        this.mapper = mapper;
-//    }
 
-    public boolean SaveLog(PostLog postLog) {
-        mapper.SavePostLog(postLog);
-        return true;
-    }
-
-    public boolean CheckRules(MetricConstraint metricConstraint, PostLog postLog) {
+    @Override
+    public boolean CheckRules(MetricConstraint metricConstraint, Log log) {
         String ConstraintType = metricConstraint.getConstraintType();
         float ConstraintValue = metricConstraint.getValue();
-        String ConstraintDescription = metricConstraint.getDescription();
+        String ConstraintDesciption = metricConstraint.getDescription();
 
-        float value = postLog.getValue();
+        float value = log.getValue();
+
 
         boolean flag = false;
 
@@ -54,18 +48,23 @@ public class ServiceImpl implements Service {
                 flag = (value <= ConstraintValue);
                 break;
         }
-        if (flag) SaveWarningLog(new WarningLog(postLog,ConstraintDescription,new Date()));
+        log.setTime(new Date());
+        log.setDescription(ConstraintDesciption);
+        if (flag) SaveWarningLog(log);
         return flag;
     }
 
-    public String SavePostLog(PostLog postLog) {
+    public String SavePostLog(Log postLog) throws JsonProcessingException {
+        mapper.SavePostLog(postLog);
+
         String metric = postLog.getMetric();
+
         MetricConstraint constraint = mapper.GetMetricConstraint(metric);
         if (constraint != null) {
-            if (CheckRules(constraint, postLog))
+            if (CheckRules(constraint, postLog)) {
                 return constraint.getDescription();
+            }
         }
-        SaveLog(postLog);
         return "";
     }
 
@@ -82,17 +81,22 @@ public class ServiceImpl implements Service {
     }
 
     @Override
-    public boolean SaveWarningLog(WarningLog warningLog) {
+    public boolean SaveWarningLog(Log warningLog) {
         mapper.SaveWarningLog(warningLog);
         return true;
     }
 
-    @PostConstruct
-    public void StartTask() {
-        //        manager = new ScheduledTaskManager();
-//        System.out.println("postconstruct");
-//        manager.StartTask();
-//        manager.ChangeInitialDelay(new Date());
-        manager.ChangeInitialDelay(new Date(mapper.GetStartTime()));
+    @Override
+    public Log GetMemorySum(String[] MemoryNameList) {
+        return mapper.GetMemorySum(MemoryNameList);
     }
+
+//    @PostConstruct
+//    public void StartTask() {
+//        Long start = (long)mapper.GetStartTime() * 1000L;
+//        Long INF = 200000000L;
+//        //如果数据为空将开始时间设为正无穷
+//        manager.ChangeInitialDelay(new Date(start >= 0 ?start:INF));
+//    }
+
 }

@@ -7,15 +7,16 @@ import java.util.List;
 
 @org.apache.ibatis.annotations.Mapper
 public interface Mapper {
-    public void SavePostLog(PostLog post);
+    public void SavePostLog(Log post);
 
     public Log GetPostLog(String metric, String instanceId);
 
     public MetricConstraint GetMetricConstraint(String metric);
 
-    public void SaveWarningLog(WarningLog warningLog);
+    public void SaveWarningLog(Log warningLog);
 
     public Log GetWarningLogAll();
 
     public int GetStartTime();
+    public Log GetMemorySum(String[] MemoryNameList);
 }

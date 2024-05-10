@@ -3,28 +3,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.course.mapper.Mapper">
 
-<!--    <insert id="SavePostLog2" parameterType="map">-->
-<!--        insert into ${tableName}-->
-<!--        <foreach collection="tableColumns" index="index" item="item" open="(" close=")" separator=",">-->
-<!--            ${index}-->
-<!--        </foreach>-->
-<!--        values-->
-<!--        <foreach collection="tableColumns" index="index" item="item" open="(" close=")" separator=",">-->
-<!--            #{item}-->
-<!--        </foreach>-->
-<!--    </insert>-->
-    <insert id="SavePostLog" parameterType="com.course.pojo.PostLog">
-        INSERT INTO postlog (metric, tags, timestamp, value)
-        VALUES (#{metric}, #{tagsJson}, #{timestamp}, #{value})
+    <insert id="SavePostLog" parameterType="com.course.pojo.Log">
+        INSERT INTO postlog (metric, tagJson, timestamp, value)
+        VALUES (#{metric}, #{tagJson}, #{timestamp}, #{value})
     </insert>
     <insert id="SaveWarningLog" parameterType="com.course.pojo.Log">
-        INSERT INTO warninglog (metric, tags, timestamp, value,description,time)
-        VALUES (#{metric}, #{tagsJson}, #{timestamp}, #{value},#{description},#{time})
+        INSERT INTO warninglog (metric, tagJson, timestamp, value,description,time)
+        VALUES (#{metric}, #{tagJson}, #{timestamp}, #{value},#{description},#{time})
     </insert>
     <!--    <insert id="SavePostLog">insert into test(id) values (2)</insert>-->
     <select id="GetPostLog" resultType="com.course.pojo.Log">
         select * from postlog
-                 where metric = #{metric} and tags like #{instanceId};
+                 where metric = #{metric} and tagJson like #{instanceId};
     </select>
     <select id="GetMetricConstraint" resultType="com.course.pojo.MetricConstraint">
         select * from MetricConstraint
@@ -34,6 +24,32 @@
         select * from warninglog;
     </select>
     <select id="GetStartTime" resultType="java.lang.Integer">
-        select timestamp from postlog limit 1
+        <if test="result != null">
+            select timestamp
+            from postlog
+            order by timestamp desc
+            limit 1
+        </if>
+        <if test="result == null">
+            select -1;
+        </if>
+    </select>
+    <select id="GetMemorySum" resultType="com.course.pojo.Log">
+        <if test="result != null">
+            select SUM(value) value,timestamp ,tagJson
+            from (
+            select * from postlog
+            order by timestamp desc
+            ) as t
+            where metric in
+            <foreach collection="MemoryNameList" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+            group by timestamp,tagJson
+            limit 1
+        </if>
+            <if test="result == null">
+                select -1,0,""
+            </if>
     </select>
 </mapper>

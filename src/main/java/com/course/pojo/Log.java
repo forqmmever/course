@@ -1,59 +1,50 @@
 package com.course.pojo;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Date;
+import java.util.Map;
 
 public class Log {
-    private int id;
     private String metric;
-    private String tags;
     private int timestamp;
     private float value;
     private String description;
     private Date time;
+    private Map<String,String> tags;
+    private String tagJson;
 
-    @Override
-    public String toString() {
-        String to = "Log{" +
-                "metric='" + metric + '\'' +
-                ", tags='" + tags + '\'' +
-                ", timestamp=" + timestamp +
-                ", value=" + value;
-        to += description != null? ", description='" + description + '\'' +
-                ", time=" + time +
-                '}':'}';
-        return to;
+    public Log(String metric, int timestamp, float value, Map<String, String> tags) {
+        this.metric = metric;
+        this.timestamp = timestamp;
+        this.value = value;
+        this.tags = tags;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    public String getTags() {
+    public Map<String, String> getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(Map<String, String> tags) {
         this.tags = tags;
+    }
+
+    public String getTagJson() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(tags);
+    }
+
+    public void setTagJson(String tagJson) {
+        this.tagJson = tagJson;
+    }
+
+    public String getMetric() {
+        return metric;
+    }
+
+    public void setMetric(String metric) {
+        this.metric = metric;
     }
 
     public int getTimestamp() {
@@ -72,11 +63,21 @@ public class Log {
         this.value = value;
     }
 
-    public String getMetric() {
-        return metric;
+    public String getDescription() {
+        return description;
     }
 
-    public void setMetric(String metric) {
-        this.metric = metric;
+    public void setDescription(String description) {
+        this.description = description;
     }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+
 }

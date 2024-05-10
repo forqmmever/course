@@ -73,4 +73,15 @@ class WebApplicationTests {
         System.out.println(startDate.getTime());
         System.out.println(initialDelay);
     }
+    @Test
+    public void testGettime(){
+        long time = mapper.GetStartTime() * 1000L;
+        System.out.println(time);
+        System.out.println(new Date(time));
+    }
+    @Test
+    public void testGetFloat(){
+        String[] MemoryNameList = {"node_memory_Buffers_bytes", "node_memory_Cached_bytes", "node_memory_MemFree_bytes", "node_memory_MemTotal_bytest"};
+        System.out.println(mapper.GetMemorySum(MemoryNameList));
+    }
 }
