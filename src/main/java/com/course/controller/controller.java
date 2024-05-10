@@ -15,19 +15,15 @@ import java.util.UUID;
 
 @Controller
 public class controller {
-
-    private Service service;
-    static int DataCnt = 0;
     @Autowired
-    public controller(Service service) {
-        this.service = service;
-    }
+    private Service service;
 
     @GetMapping("/hello")
     @ResponseBody
     public String hello() {
         return "hello world";
     }
+    static int DataCnt = 0;
 
     @PostMapping("/api/metric/put")
     @ResponseBody

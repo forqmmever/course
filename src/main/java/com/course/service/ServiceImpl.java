@@ -4,20 +4,24 @@ import com.course.mapper.Mapper;
 import com.course.pojo.MetricConstraint;
 import com.course.pojo.PostLog;
 import com.course.pojo.WarningLog;
+import com.course.task.ScheduledTaskManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 
 @org.springframework.stereotype.Service
 public class ServiceImpl implements Service {
 
-    private Mapper mapper;
-
     @Autowired
-    public ServiceImpl(Mapper mapper) {
-        this.mapper = mapper;
-    }
+    private Mapper mapper;
+    @Autowired
+    private ScheduledTaskManager manager;
 
+//    @Autowired
+//    public ServiceImpl(Mapper mapper) {
+//        this.mapper = mapper;
+//    }
 
     public boolean SaveLog(PostLog postLog) {
         mapper.SavePostLog(postLog);
@@ -83,5 +87,12 @@ public class ServiceImpl implements Service {
         return true;
     }
 
-
+    @PostConstruct
+    public void StartTask() {
+        //        manager = new ScheduledTaskManager();
+//        System.out.println("postconstruct");
+//        manager.StartTask();
+//        manager.ChangeInitialDelay(new Date());
+        manager.ChangeInitialDelay(new Date(mapper.GetStartTime()));
+    }
 }

@@ -16,4 +16,6 @@ public interface Mapper {
     public void SaveWarningLog(WarningLog warningLog);
 
     public Log GetWarningLogAll();
+
+    public int GetStartTime();
 }

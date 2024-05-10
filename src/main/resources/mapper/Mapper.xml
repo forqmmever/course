@@ -33,4 +33,7 @@
     <select id="GetWarningLogAll" resultType="com.course.pojo.Log">
         select * from warninglog;
     </select>
+    <select id="GetStartTime" resultType="java.lang.Integer">
+        select timestamp from postlog limit 1
+    </select>
 </mapper>
