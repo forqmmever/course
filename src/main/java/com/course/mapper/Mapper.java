@@ -1,6 +1,7 @@
 package com.course.mapper;
 
 import com.course.pojo.*;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -9,7 +10,8 @@ import java.util.List;
 public interface Mapper {
     public void SavePostLog(Log post);
 
-    public Log GetPostLog(String metric, String instanceId);
+//    @Select("select * from postlog where metric = #{metric} and tagJson like #{instanceId}")
+    public Log GetPostLog(String metric, String instanceId,int timestamp);
 
     public MetricConstraint GetMetricConstraint(String metric);
 
@@ -17,6 +19,8 @@ public interface Mapper {
 
     public Log GetWarningLogAll();
 
-    public int GetStartTime();
-    public Log GetMemorySum(String[] MemoryNameList);
+    public Integer GetStartTime();
+    public Log GetMemoryLog(String metric);
+
+    public Log GetNetworkReceive(int rage);
 }

@@ -2,7 +2,7 @@ package com.course.web;
 
 import com.course.mapper.Mapper;
 import com.course.pojo.MetricConstraint;
-import com.course.pojo.PostLog;
+
 import com.course.service.Service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +59,8 @@ class WebApplicationTests {
 
     @Test
     public void tesSelect() {
-//        System.out.println(mapper.GetMetricConstraint("up"));
-          System.out.println(service.GetPostLog("up", "7273a1ea-0089-4674-b606-b1b8d809d866"));
+//          System.out.println(mapper.GetMetricConstraint("up"));
+          System.out.println(service.GetPostLog("up", "7273a1ea-0089-4674-b606-b1b8d809d866",1631762560));
 //        System.out.println(mapper.GetWarningLogAll());
     }
 
@@ -79,9 +79,15 @@ class WebApplicationTests {
         System.out.println(time);
         System.out.println(new Date(time));
     }
-    @Test
-    public void testGetFloat(){
+    @Test void testGetMemory(){
         String[] MemoryNameList = {"node_memory_Buffers_bytes", "node_memory_Cached_bytes", "node_memory_MemFree_bytes", "node_memory_MemTotal_bytest"};
-        System.out.println(mapper.GetMemorySum(MemoryNameList));
+        for (String memoryName : MemoryNameList){
+            System.out.println(mapper.GetMemoryLog(memoryName));
+        }
+    }
+    @Test
+    public void testGetreceive(){
+        System.out.println((mapper.GetNetworkReceive(60)));
+        System.out.println((mapper.GetNetworkReceive(0)));
     }
 }

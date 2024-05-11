@@ -1,0 +1,200 @@
+[
+    {
+        "metric": "node_load5",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 5.1
+    },
+    {
+        "metric": "node_cpu_seconds_total",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 100
+    },
+    {
+        "metric": "node_memory_MemTotal_bytes",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 9000000000
+    },
+    {
+        "metric": "node_memory_MemFree_bytes",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 100
+    },
+    {
+        "metric": "node_memory_Buffers_bytes",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 1048576
+    },
+    {
+        "metric": "node_memory_Cached_bytes",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 2097152
+    },
+    {
+        "metric": "node_filesystem_avail_bytes",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 1073741824
+    },
+    {
+        "metric": "node_filesystem_size_bytes",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 2147483648
+    },
+    {
+        "metric": "node_filesystem_free_bytes",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 1073741824
+    },
+    {
+        "metric": "node_disk_read_bytes_total",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 1048576
+    },
+    {
+        "metric": "node_disk_written_bytes_total",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 1048576
+    },
+    {
+        "metric": "node_disk_reads_completed_total",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 10
+    },
+    {
+        "metric": "node_disk_writes_completed_total",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 10
+    },
+    {
+        "metric": "node_network_receive_bytes_total",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 1076248576
+    },
+    {
+        "metric": "node_network_transmit_bytes_total",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 1048576
+    },
+    {
+        "metric": "node_network_receive_packets_total",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 10
+    },
+    {
+        "metric": "node_network_transmit_packets_total",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 10
+    },
+    {
+        "metric": "node_network_receive_drop_total",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 0
+    },
+    {
+        "metric": "node_network_transmit_drop_total",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 0
+    },
+    {
+        "metric": "node_netstat_Tcp_CurrEstab",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 1
+    },
+    {
+        "metric": "node_sockstat_TCP_tw",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 0
+    },
+    {
+        "metric": "up",
+        "tags": {
+            "instanceId": "7273a1ea-0089-4674-b606-b1b8d809d866",
+            "hostname":"kec-a2577cdf-gn-d74b90af-az1-task-1-1"
+        },
+        "timestamp": 1631762600,
+        "value": 1
+    }
+]

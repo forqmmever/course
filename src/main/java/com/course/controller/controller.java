@@ -1,7 +1,7 @@
 package com.course.controller;
 
 import com.course.pojo.Log;
-//import com.course.pojo.PostLog;
+//
 import com.course.pojo.PostResult;
 import com.course.service.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,14 +30,14 @@ public class controller {
     @PostMapping("/api/metric/put")
     @ResponseBody
     public PostResult ReceiveMonitor(@RequestBody List<Log> postDataList) throws JsonProcessingException {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (Log postData : postDataList) {
             String Rec = service.SavePostLog(postData);
-            result += Rec ;
+            result.append(Rec);
             DataCnt ++;
         }
-        Integer code = result == ""?Code.Http_OK:Code.Http_ERR;
-        String msg = result == ""?"ok":result;
+        Integer code = result.toString().equals("") ?Code.Http_OK:Code.Http_ERR;
+        String msg = result.toString().equals("") ?"ok": result.toString();
         return new PostResult(UUID.randomUUID().toString(),msg);
     }
 }

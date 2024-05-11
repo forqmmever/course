@@ -2,40 +2,51 @@ package com.course.pojo;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.lang.String;
 
 import java.util.Date;
 import java.util.Map;
 
 public class Log {
+    private int id;
     private String metric;
+    private String tagJson;
     private int timestamp;
     private float value;
+    private Map<String, String> tags;
     private String description;
     private Date time;
-    private Map<String,String> tags;
-    private String tagJson;
-
-    public Log(String metric, int timestamp, float value, Map<String, String> tags) {
+    public Log(){}
+    public Log(String metric, Map<String, String> tags,int timestamp, float value) {
         this.metric = metric;
         this.timestamp = timestamp;
         this.value = value;
         this.tags = tags;
     }
 
-    public Map<String, String> getTags() {
-        return tags;
+    public Log(int id, String metric, String tagJson, int timestamp, float value) {
+        this.id = id;
+        this.metric = metric;
+        this.tagJson = tagJson;
+        this.timestamp = timestamp;
+        this.value = value;
     }
 
-    public void setTags(Map<String, String> tags) {
+    public Log(String metric, int timestamp, float value, Map<String, String> tags, String tagJson, String description, Date time) {
+        this.metric = metric;
+        this.timestamp = timestamp;
+        this.value = value;
         this.tags = tags;
+        this.tagJson = tagJson;
+        this.description = description;
+        this.time = time;
     }
 
-    public String getTagJson() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(tags);
-    }
 
-    public void setTagJson(String tagJson) {
+
+    public Log(int timestamp, float value, String tagJson) {
+        this.timestamp = timestamp;
+        this.value = value;
         this.tagJson = tagJson;
     }
 
@@ -63,6 +74,22 @@ public class Log {
         this.value = value;
     }
 
+    public Map<String, String> getTags() {
+        return tags;
+    }
+
+    public void setTags(Map<String, String> tags) {
+        this.tags = tags;
+    }
+
+    public String getTagJson() {
+        return tagJson;
+    }
+
+    public void setTagJson(String tagJson) {
+        this.tagJson = tagJson;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -79,5 +106,21 @@ public class Log {
         this.time = time;
     }
 
+    public String getTagsJson() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(tags);
+    }
 
+    @Override
+    public String toString() {
+        return "Log{" +
+                "metric='" + metric + '\'' +
+                ", timestamp=" + timestamp +
+                ", value=" + value +
+                ", tags=" + tags +
+                ", tagJson='" + tagJson + '\'' +
+                ", description='" + description + '\'' +
+                ", time=" + time +
+                '}';
+    }
 }
