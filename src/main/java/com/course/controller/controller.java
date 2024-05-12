@@ -21,7 +21,7 @@ import static com.course.controller.Code.Http_OK;
 public class controller {
     @Autowired
     private Service service;
-//    static int DataCnt = 0;
+//    static int DataCnt = 0
 
     @PostMapping("/metric/put")
     @ResponseBody
