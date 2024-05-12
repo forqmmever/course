@@ -45,7 +45,7 @@ public class ScheduledTaskManager {
     // 动态修改定时任务的参数
     public void ChangeInterval(int Interval) {
         StopTask(); // 先停止定时任务
-        interval = Interval; // 修改参数
+        interval = Interval * 1000; // 修改参数
         StartTask(); // 重新启动定时任务
     }
     public void ChangeInitialDelay(Date Start){
@@ -90,13 +90,6 @@ public class ScheduledTaskManager {
         memoryCalculated.setValue( (1- (memorySum / div)) * 100 );
         System.out.println(memoryCalculated);
 
-//        MetricConstraint constraint = service.GetMetricConstraint("memory");
-//        if (service.CheckRules(constraint,memoryCalculated)){
-//            memoryCalculated.setDescription(constraint.getDescription());
-//            memoryCalculated.setTime(new Date());
-//            System.out.println(memoryCalculated);
-//            service.SaveWarningLog(memoryCalculated);
-//        }
         service.CheckRules(service.GetMetricConstraint("memory"),memoryCalculated);
     }
 
@@ -112,8 +105,6 @@ public class ScheduledTaskManager {
         rateReceive.setValue(endReceive.getValue() - startReceive.getValue());
         rateReceive.setTimestamp(endReceive.getTimestamp());
         rateReceive.setTagJson(endReceive.getTagJson());
-
-//        MetricConstraint constraint= service.GetMetricConstraint("rate_network_receive_bytes_total");
 
         service.CheckRules(service.GetMetricConstraint("rate_network_receive_bytes_total"),rateReceive);
     }

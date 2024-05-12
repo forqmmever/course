@@ -1,5 +1,6 @@
 package com.course.service;
 
+import com.course.entity.TaskSet;
 import com.course.mapper.Mapper;
 import com.course.entity.Log;
 import com.course.entity.MetricConstraint;
@@ -98,6 +99,22 @@ public class ServiceImpl implements Service {
     }
 
     @Override
+    public void UpdateConstraint(String metric, MetricConstraint constraint) {
+        mapper.UpdateConstraint(metric,constraint);
+    }
+
+    @Override
+    public void AddConstraint(MetricConstraint constraint) {
+        mapper.AddConstraint(constraint);
+    }
+
+    @Override
+    public boolean DeletConstraint(String metric) {
+        mapper.DeleteConstraint(metric);
+        return true;
+    }
+
+    @Override
     public List<Log> GetWarnigLogAll() {
         return mapper.GetWarningLogAll();
     }
@@ -105,6 +122,13 @@ public class ServiceImpl implements Service {
     @Override
     public List<MetricConstraint> GetConstraintAll() {
         return mapper.GetConstraintAll();
+    }
+
+    @Override
+    public boolean ChangeTaskSet(int interval,Date date) {
+        manager.ChangeInterval(interval);
+        manager.ChangeInitialDelay(date);
+        return true;
     }
 
 //    @PostConstruct
