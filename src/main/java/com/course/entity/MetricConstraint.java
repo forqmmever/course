@@ -1,4 +1,4 @@
-package com.course.pojo;
+package com.course.entity;
 
 public class MetricConstraint {
     private int id;

@@ -1,7 +1,10 @@
 package com.course.service;
 
-import com.course.pojo.*;
+import com.course.entity.Log;
+import com.course.entity.MetricConstraint;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.util.List;
 
 @org.springframework.stereotype.Service
 public interface Service {
@@ -17,4 +20,6 @@ public interface Service {
     public boolean CheckRules(MetricConstraint metricConstraint, Log log);
     public Log GetMemoryLog(String MemoryName);
     public Log GetNetworkReceive(int rate);
+    public List<Log> GetWarnigLogAll();
+    public List<MetricConstraint> GetConstraintAll();
 }

@@ -1,7 +1,7 @@
 package com.course.web;
 
+import com.course.entity.Log;
 import com.course.mapper.Mapper;
-import com.course.pojo.MetricConstraint;
 
 import com.course.service.Service;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -90,4 +89,14 @@ class WebApplicationTests {
         System.out.println((mapper.GetNetworkReceive(60)));
         System.out.println((mapper.GetNetworkReceive(0)));
     }
+    @Test
+    public void testGetALL(){
+        List<Log> ans = mapper.GetWarningLogAll();
+        for (Log item : ans){
+//            System.out.println(item.getTags());
+            System.out.println(item);
+        }
+    }
+
+
 }

@@ -1,20 +1,13 @@
 package com.course.service;
 
-import com.course.pojo.Log;
+import com.course.entity.Log;
 
-import com.course.pojo.MetricConstraint;
+import com.course.entity.MetricConstraint;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 
 @Component
@@ -29,7 +22,7 @@ public class ScheduledTaskManager {
     private int rate = 60;
 
     // 默认定时任务的执行间隔为5秒
-    private int interval = 5000;
+    private int interval = 30000;
 
     public ScheduledTaskManager(Service service, TaskScheduler taskScheduler) {
         this.service = service;
@@ -77,7 +70,6 @@ public class ScheduledTaskManager {
         for (String memoryName : MemoryNameList){
             Log memoryLog = service.GetMemoryLog(memoryName);
             if (memoryLog == null){
-                StopTask();
                 return;
             }
             tagJson = memoryLog.getTagJson();
@@ -87,7 +79,6 @@ public class ScheduledTaskManager {
 
         Log totalMemory = service.GetMemoryLog("node_memory_MemTotal_bytes");
         if (totalMemory== null){
-            StopTask();
             return;
         }
         float div = totalMemory.getValue();
@@ -99,17 +90,21 @@ public class ScheduledTaskManager {
         memoryCalculated.setValue( (1- (memorySum / div)) * 100 );
         System.out.println(memoryCalculated);
 
-        MetricConstraint constraint = service.GetMetricConstraint("memory");
-        if (service.CheckRules(constraint,memoryCalculated)){
-            memoryCalculated.setDescription(constraint.getDescription());
-            memoryCalculated.setTime(new Date());
-            System.out.println(memoryCalculated);
-            service.SaveWarningLog(memoryCalculated);
-        }
+//        MetricConstraint constraint = service.GetMetricConstraint("memory");
+//        if (service.CheckRules(constraint,memoryCalculated)){
+//            memoryCalculated.setDescription(constraint.getDescription());
+//            memoryCalculated.setTime(new Date());
+//            System.out.println(memoryCalculated);
+//            service.SaveWarningLog(memoryCalculated);
+//        }
+        service.CheckRules(service.GetMetricConstraint("memory"),memoryCalculated);
     }
 
     private void CheckNetwokReceive(){
         Log startReceive = service.GetNetworkReceive(rate);
+        if (startReceive == null){
+            return;
+        }
         Log endReceive = service.GetNetworkReceive(0);
 
         Log rateReceive = new Log();
@@ -118,13 +113,8 @@ public class ScheduledTaskManager {
         rateReceive.setTimestamp(endReceive.getTimestamp());
         rateReceive.setTagJson(endReceive.getTagJson());
 
-        MetricConstraint constraint= service.GetMetricConstraint("rate_network_receive_bytes_total");
+//        MetricConstraint constraint= service.GetMetricConstraint("rate_network_receive_bytes_total");
 
-        if (service.CheckRules(constraint,rateReceive)){
-            rateReceive.setTime(new Date());
-            rateReceive.setDescription(constraint.getDescription());
-            System.out.println(rateReceive);
-            service.SaveWarningLog(rateReceive);
-        }
+        service.CheckRules(service.GetMetricConstraint("rate_network_receive_bytes_total"),rateReceive);
     }
 }

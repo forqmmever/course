@@ -1,8 +1,8 @@
 package com.course.service;
 
 import com.course.mapper.Mapper;
-import com.course.pojo.Log;
-import com.course.pojo.MetricConstraint;
+import com.course.entity.Log;
+import com.course.entity.MetricConstraint;
 //
 //import com.course.pojo.WarningLog;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
+import java.util.List;
 
 @org.springframework.stereotype.Service
 public class ServiceImpl implements Service {
@@ -96,12 +97,22 @@ public class ServiceImpl implements Service {
         return mapper.GetNetworkReceive(rate);
     }
 
-    @PostConstruct
-    public void StartTask() {
-        Long INF =  10000000000L * 1000L;
-        Integer startTime = mapper.GetStartTime();
-        //如果数据为空将开始时间设为正无穷
-        manager.ChangeInitialDelay(new Date(startTime == null? INF: startTime * 1000L));
+    @Override
+    public List<Log> GetWarnigLogAll() {
+        return mapper.GetWarningLogAll();
     }
+
+    @Override
+    public List<MetricConstraint> GetConstraintAll() {
+        return mapper.GetConstraintAll();
+    }
+
+//    @PostConstruct
+//    public void StartTask() {
+//        Long INF =  10000000000L * 1000L;
+//        Integer startTime = mapper.GetStartTime();
+//        //如果数据为空将开始时间设为正无穷
+//        manager.ChangeInitialDelay(new Date(startTime == null? INF: startTime * 1000L));
+//    }
 
 }

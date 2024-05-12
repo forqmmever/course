@@ -13,7 +13,7 @@ import java.text.ParseException;
 @EnableScheduling
 public class WebApplication {
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) {
         SpringApplication.run(WebApplication.class, args);
     }
 

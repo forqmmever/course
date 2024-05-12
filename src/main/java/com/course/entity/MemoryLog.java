@@ -1,4 +1,4 @@
-package com.course.pojo;
+package com.course.entity;
 
 import java.util.ArrayList;
 import java.util.List;

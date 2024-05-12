@@ -3,37 +3,37 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.course.mapper.Mapper">
 
-    <insert id="SavePostLog" parameterType="com.course.pojo.Log">
+    <insert id="SavePostLog" parameterType="com.course.entity.Log">
         INSERT INTO postlog (metric, tagJson, timestamp, value)
-        VALUES (#{metric}, #{tagsJson}, #{timestamp}, #{value})
+        VALUES (#{metric}, #{tagJson}, #{timestamp}, #{value})
     </insert>
-    <insert id="SaveWarningLog" parameterType="com.course.pojo.Log">
+    <insert id="SaveWarningLog" parameterType="com.course.entity.Log">
         INSERT INTO warninglog (metric, tagJson, timestamp, value, description, time)
-        VALUES (#{metric}, #{tagsJson}, #{timestamp}, #{value}, #{description}, #{time})
+        VALUES (#{metric}, #{tagJson}, #{timestamp}, #{value}, #{description}, #{time})
     </insert>
-    <select id="GetPostLog" resultType="com.course.pojo.Log">
+    <select id="GetPostLog" resultType="com.course.entity.Log">
         select *
         from postlog
         where metric = #{metric}
           and tagJson like #{instanceId}
           and timestamp = #{timestamp}
     </select>
-    <select id="GetMetricConstraint" resultType="com.course.pojo.MetricConstraint">
+    <select id="GetMetricConstraint" resultType="com.course.entity.MetricConstraint">
         select *
         from MetricConstraint
         where metric = #{metric};
     </select>
-    <select id="GetWarningLogAll" resultType="com.course.pojo.Log">
-        select *
-        from warninglog;
-    </select>
+<!--    <select id="GetWarningLogAll" resultType="com.course.entity.Log">-->
+<!--        select *-->
+<!--        from warninglog;-->
+<!--    </select>-->
     <select id="GetStartTime" resultType="java.lang.Integer">
         select timestamp
         from postlog
         order by timestamp desc
             limit 1
     </select>
-    <select id="GetMemoryLog" resultType="com.course.pojo.Log">
+    <select id="GetMemoryLog" resultType="com.course.entity.Log">
         <!--        select timestamp,SUM(value) as value,tagJson-->
         <!--        from (-->
         <!--        select * from postLog-->
@@ -51,7 +51,7 @@
         order by timestamp desc
         limit 1
     </select>
-    <select id="GetNetworkReceive" resultType="com.course.pojo.Log">
+    <select id="GetNetworkReceive" resultType="com.course.entity.Log">
         select postlog.timestamp,postlog.value,postlog.tagJson
         from postlog,(select timestamp,tagJson from postlog order by timestamp desc limit 1) as t
         where metric ='node_network_receive_bytes_total'

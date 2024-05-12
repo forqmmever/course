@@ -1,6 +1,7 @@
 package com.course.mapper;
 
-import com.course.pojo.*;
+import com.course.entity.Log;
+import com.course.entity.MetricConstraint;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -17,7 +18,10 @@ public interface Mapper {
 
     public void SaveWarningLog(Log warningLog);
 
-    public Log GetWarningLogAll();
+    @Select("select * from warninglog")
+    public List<Log> GetWarningLogAll();
+    @Select("Select * from metricconstraint")
+    public List<MetricConstraint> GetConstraintAll();
 
     public Integer GetStartTime();
     public Log GetMemoryLog(String metric);

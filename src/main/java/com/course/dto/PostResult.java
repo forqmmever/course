@@ -1,4 +1,4 @@
-package com.course.pojo;
+package com.course.dto;
 
 public class PostResult {
     private String requestId;
