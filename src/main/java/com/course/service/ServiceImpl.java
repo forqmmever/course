@@ -131,12 +131,12 @@ public class ServiceImpl implements Service {
         return true;
     }
 
-//    @PostConstruct
-//    public void StartTask() {
-//        Long INF =  10000000000L * 1000L;
-//        Integer startTime = mapper.GetStartTime();
-//        //如果数据为空将开始时间设为正无穷
-//        manager.ChangeInitialDelay(new Date(startTime == null? INF: startTime * 1000L));
-//    }
+    @PostConstruct
+    public void StartTask() {
+        Long INF =  10000000000L * 1000L;
+        Integer startTime = mapper.GetStartTime();
+        //如果数据为空将开始时间设为正无穷
+        manager.ChangeInitialDelay(new Date(startTime == null? INF: startTime * 1000L));
+    }
 
 }
