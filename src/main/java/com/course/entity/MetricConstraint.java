@@ -7,6 +7,14 @@ public class MetricConstraint {
     private float value;
     private String description;
 
+    public MetricConstraint(int id, String metric, String constraintType, float value, String description) {
+        this.id = id;
+        this.metric = metric;
+        this.constraintType = constraintType;
+        this.value = value;
+        this.description = description;
+    }
+
     public String getDescription() {
         return description;
     }

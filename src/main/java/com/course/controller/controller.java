@@ -51,4 +51,10 @@ public class controller {
     public List<MetricConstraint> getConstraintAll(){
         return service.GetConstraintAll();
     }
+
+    @PutMapping("/api/constraint/update/{metric}")
+    public PostResult UpdateConstraint(@PathVariable String metric,@RequestBody MetricConstraint newData){
+        System.out.println(newData);
+        return new PostResult(UUID.randomUUID().toString(), "ok");
+    }
 }

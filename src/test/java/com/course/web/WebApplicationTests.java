@@ -1,6 +1,7 @@
 package com.course.web;
 
 import com.course.entity.Log;
+import com.course.entity.MetricConstraint;
 import com.course.mapper.Mapper;
 
 import com.course.service.Service;
@@ -97,6 +98,9 @@ class WebApplicationTests {
             System.out.println(item);
         }
     }
-
+    @Test void testUpdate(){
+        MetricConstraint metricConstraint = new MetricConstraint(1, "up", "=", 0, "宕机");
+        mapper.UpdateConstraint("up",metricConstraint);
+    }
 
 }
