@@ -21,7 +21,6 @@ public class ScheduledTaskManager {
     private ScheduledFuture<?> scheduledFuture;
     private static int LatestTimestamp = -1;
 
-    // 默认定时任务的执行间隔为5秒
     private int interval = 30000;
 
     public ScheduledTaskManager(Service service, TaskScheduler taskScheduler) {
@@ -57,15 +56,19 @@ public class ScheduledTaskManager {
 
 
     // 定时任务执行的方法
-    public void executeTask() {
-//        System.out.println("当前时间：" + new Date());
+    private void executeTask() {
+        System.out.println("当前时间：" + new Date());
         List<MetricConstraint> metricConstraintList = service.GetConstraintAll(1);
+        if (metricConstraintList == null) return;
+        int nowTimestamp = 0;
         for (MetricConstraint constraint : metricConstraintList) {
-            CheckConstraint(constraint);
+            nowTimestamp=  CheckConstraint(constraint);
         }
+        LatestTimestamp = nowTimestamp;
+
     }
 
-    private void CheckConstraint(MetricConstraint metricConstraint) {
+    private int CheckConstraint(MetricConstraint metricConstraint) {
         String metric = metricConstraint.getMetric();
         String expression = metricConstraint.getConstraintType();
         StringBuilder ConstraintType = new StringBuilder();
@@ -135,9 +138,8 @@ public class ScheduledTaskManager {
                         Log log = service.GetLatestLog(metric + "_" + strMetric);
                         timestamp = log.getTimestamp();
                         //判断该时间戳数据是否检查过
-                        if (timestamp == LatestTimestamp) return;
+                        if (timestamp == LatestTimestamp) return timestamp;
                         tagJson = log.getTagJson();
-                        LatestTimestamp = timestamp;
                     }
 
                     List<Float> ValueList = new ArrayList<>(service.GetLogValueRage(metric + "_" + strMetric, timestamp, rage));
@@ -166,7 +168,7 @@ public class ScheduledTaskManager {
                     if (timestamp == 0) {
                         Log log = service.GetLatestLog(metric + "_" + sb);
                         timestamp = log.getTimestamp();
-                        if (LatestTimestamp == timestamp) return;
+                        if (LatestTimestamp == timestamp) return timestamp;
                         tagJson = log.getTagJson();
                         num = log.getValue();
                     } else {
@@ -206,6 +208,7 @@ public class ScheduledTaskManager {
 
         float ans = values.pop();
         service.CheckRules(ConstraintType.toString(), ConstraintValue, ConstraintDesciption, new Log(metric, tagJson, timestamp, ans));
+        return timestamp;
     }
 
     // 返回运算符op1和op2的优先级是否小于等于

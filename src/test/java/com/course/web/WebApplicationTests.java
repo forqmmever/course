@@ -103,8 +103,4 @@ class WebApplicationTests {
         mapper.UpdateConstraint("up",metricConstraint);
     }
 
-    @Test
-    public void testEvalute(){
-        manager.executeTask();
-    }
 }

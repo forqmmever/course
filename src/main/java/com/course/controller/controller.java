@@ -36,10 +36,16 @@ public class controller {
         return new Result(UUID.randomUUID().toString(), msg,Http_OK);
     }
 
-    @GetMapping("/metric/get")
+    @GetMapping("/warning/get")
     public List<Log> GetWarningLogAll() {
 
         return service.GetWarningLogAll();
+    }
+
+    @GetMapping("/postlog/get")
+    public List<Log> GetPostLogAll() {
+
+        return service.GetPostLogAll();
     }
 
     @GetMapping("/constraint/get")
@@ -67,6 +73,7 @@ public class controller {
 
     @PutMapping("/constraint/new")
     public Result AddConstraint(@RequestBody MetricConstraint metricConstraint){
+        System.out.println(metricConstraint);
         service.AddConstraint(metricConstraint);
         return new Result(UUID.randomUUID().toString(), "ok",Http_OK);
     }

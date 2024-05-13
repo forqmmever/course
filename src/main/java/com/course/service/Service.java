@@ -36,4 +36,6 @@ public interface Service {
     public List<MetricConstraint> GetConstraintAll(int type);
 
     public boolean ChangeTaskSet(int interval, Date date);
+
+    public List<Log> GetPostLogAll();
 }

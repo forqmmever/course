@@ -118,6 +118,11 @@ public class ServiceImpl implements Service {
         return true;
     }
 
+    @Override
+    public List<Log> GetPostLogAll() {
+        return mapper.GetPostLogAll();
+    }
+
     @PostConstruct
     public void StartTask() {
         Long INF = 10000000000L * 1000L;

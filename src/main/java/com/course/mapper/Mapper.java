@@ -25,7 +25,7 @@ public interface Mapper {
     @Select("select * from MetricConstraint where metric = #{metric} ")
     public MetricConstraint GetMetricConstraint(String metric);
 
-    @Insert("insert into metricconstraint(metric, constraintType, value, description) values (#{metric},#{constraintType},#{value},#{description})")
+    @Insert("insert into metricconstraint(metric, constraintType, value, description,type) values (#{metric},#{constraintType},#{value},#{description},#{type})")
     public void AddConstraint(MetricConstraint metricConstraint);
 
     @Insert("insert into warninglog (metric, tagJson, timestamp, value, description, time) values (#{metric}, #{tagJson}, #{timestamp}, #{value}, #{description}, #{time})")
@@ -37,7 +37,10 @@ public interface Mapper {
     @Select("select * from metricconstraint where type >= #{type}")
     public List<MetricConstraint> GetConstraintAll(int type);
 
-    @Update("update metricconstraint set constraintType = #{newData.constraintType},value = #{newData.value},description = #{newData.description} where metric = #{metric}")
+    @Select("select * from postlog")
+    public List<Log> GetPostLogAll();
+
+    @Update("update metricconstraint set constraintType = #{newData.constraintType},value = #{newData.value},description = #{newData.description},type = #{type} where metric = #{metric}")
     public void UpdateConstraint(String metric, MetricConstraint newData);
 
     @Delete("delete from metricconstraint where metric = #{metric}")
