@@ -9,4 +9,8 @@ public class IndexController {
     public String index() {
         return "index";
     }
+    @GetMapping("/#/")
+    public String index2() {
+        return "index";
+    }
 }
