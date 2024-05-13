@@ -2,6 +2,7 @@ package com.course.service;
 
 import com.course.entity.Log;
 import com.course.entity.MetricConstraint;
+import com.course.utils.Aggregation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ public class ScheduledTaskManager {
     private final String[] MemoryNameList = {"node_memory_Buffers_bytes", "node_memory_Cached_bytes", "node_memory_MemFree_bytes"};
     private Date start;
     private ScheduledFuture<?> scheduledFuture;
-    private int rate = 60;
+    private static int LatestTimestamp = -1;
 
     // 默认定时任务的执行间隔为5秒
     private int interval = 30000;
@@ -54,26 +55,25 @@ public class ScheduledTaskManager {
         StartTask(); // 重新启动定时任务
     }
 
-    public void ChangeRate(int rate) {
-        this.rate = rate;
-    }
 
     // 定时任务执行的方法
     public void executeTask() {
-        System.out.println("当前时间：" + new Date());
+//        System.out.println("当前时间：" + new Date());
         List<MetricConstraint> metricConstraintList = service.GetConstraintAll(1);
-        for (MetricConstraint constraint : metricConstraintList){
+        for (MetricConstraint constraint : metricConstraintList) {
             CheckConstraint(constraint);
         }
     }
 
-    private void CheckConstraint(MetricConstraint metricConstraint){
+    private void CheckConstraint(MetricConstraint metricConstraint) {
         String metric = metricConstraint.getMetric();
         String expression = metricConstraint.getConstraintType();
-        String tagJson = "";
         StringBuilder ConstraintType = new StringBuilder();
         String ConstraintDesciption = metricConstraint.getDescription();
+
+        String tagJson = "";
         int timestamp = 0;
+
         float ConstraintValue = metricConstraint.getValue();
 
         char[] tokens = expression.toCharArray();
@@ -85,48 +85,104 @@ public class ScheduledTaskManager {
         Stack<Character> operators = new Stack<>();
 
         for (int i = 0; i < tokens.length; i++) {
-            // 如果当前字符是空格，则忽略
             if (tokens[i] == ' ')
                 continue;
 
-            // 如果当前字符是数字，则将连续的数字字符转换为数字，并入栈
+            //数字
             if (Character.isDigit(tokens[i])) {
                 StringBuilder sb = new StringBuilder();
                 while (i < tokens.length && Character.isDigit(tokens[i])) {
                     sb.append(tokens[i++]);
                 }
-                i--; // 因为for循环还会执行一次i++
+                i--;
                 values.push(Float.parseFloat(sb.toString()));
             }
-            else if (Character.isLetter(tokens[i])){
+            //字符
+            else if (Character.isLetter(tokens[i])) {
+                float num = 0;
+
                 StringBuilder sb = new StringBuilder();
                 while (i < tokens.length && (Character.isLetter(tokens[i]) || tokens[i] == '_')) {
                     sb.append(tokens[i++]);
                 }
-                i--; // 因为for循环还会执行一次i++
-                System.out.println(metric + "_" + sb.toString());
-                Log item =  service.GetPostLog(metric + "_" + sb.toString());
-                System.out.println(item);
-                if (tagJson.isEmpty()) {
-                    tagJson = item.getTagJson();
-                    timestamp = item.getTimestamp();
-                }
-                values.push(item.getValue());
-            }
 
-            // 如果当前字符是'('，则将其入栈
-            else if (tokens[i] == '(') {
+                // 聚合操作预处理
+                if (sb.toString().equals("max")
+                        || sb.toString().equals("min")
+                        || sb.toString().equals("sum")
+                        || sb.toString().equals("avg")
+                        || sb.toString().equals("rate")) {
+                    i++;
+                    StringBuilder strMetric = new StringBuilder();
+                    while (i < tokens.length && (Character.isLetter(tokens[i]) || tokens[i] == '_')) {
+                        strMetric.append(tokens[i++]);
+                    }
+                    //token[i..]='['
+                    i++;
+
+                    StringBuilder strRage = new StringBuilder();
+                    while (i < tokens.length && Character.isDigit(tokens[i])) {
+                        strRage.append(tokens[i++]);
+                    }
+
+                    int rage = Integer.parseInt(strRage.toString()) * (tokens[i] == 's' ?
+                            1 : tokens[i] == 'm' ?
+                            60 : tokens[i] == 'h' ?
+                            60 * 60 : 24 * 60 * 60);
+
+                    //第一次读取Log获取主机名 时间戳
+                    if (timestamp == 0) {
+                        Log log = service.GetLatestLog(metric + "_" + strMetric);
+                        timestamp = log.getTimestamp();
+                        //判断该时间戳数据是否检查过
+                        if (timestamp == LatestTimestamp) return;
+                        tagJson = log.getTagJson();
+                        LatestTimestamp = timestamp;
+                    }
+
+                    List<Float> ValueList = new ArrayList<>(service.GetLogValueRage(metric + "_" + strMetric, timestamp, rage));
+
+                    switch (sb.toString()) {
+                        case "max":
+                            num = Aggregation.MaxValue(ValueList);
+                            break;
+                        case "min":
+                            num = Aggregation.MinValue(ValueList);
+                            break;
+                        case "sum":
+                            num = Aggregation.SumValue(ValueList);
+                            break;
+                        case "avg":
+                            num = Aggregation.AvgValue(ValueList);
+                            break;
+                        case "rate":
+                            num = Aggregation.RateValue(ValueList) / rage;
+                            break;
+                    }
+                    //tokens[i..] == '])...'
+                    i += 2;
+
+                } else {
+                    if (timestamp == 0) {
+                        Log log = service.GetLatestLog(metric + "_" + sb);
+                        timestamp = log.getTimestamp();
+                        if (LatestTimestamp == timestamp) return;
+                        tagJson = log.getTagJson();
+                        num = log.getValue();
+                    } else {
+                        num = service.GetLogValue(metric + "_" + sb, timestamp);
+                    }
+                    i--; // 因为for循环还会执行一次i++
+                }
+                values.push(num);
+            } else if (tokens[i] == '(') {
                 operators.push(tokens[i]);
-            }
-
-            // 如果当前字符是')'，则弹出栈顶的操作符和栈顶的两个操作数，计算结果并入栈
-            else if (tokens[i] == ')') {
+            } else if (tokens[i] == ')') {
                 while (operators.peek() != '(') {
-                    values.push( applyOperator(operators.pop(), values.pop(), values.pop()));
+                    values.push(applyOperator(operators.pop(), values.pop(), values.pop()));
                 }
-                operators.pop(); // 弹出'('
+                operators.pop();
             }
-
             // 如果当前字符是操作符，将其与栈顶的操作符进行比较
             // 如果当前操作符的优先级小于或等于栈顶操作符的优先级，则弹出栈顶操作符和栈顶两个操作数，计算结果并入栈
             // 否则，将当前操作符入栈
@@ -137,6 +193,7 @@ public class ScheduledTaskManager {
                 }
                 operators.push(tokens[i]);
             }
+            //
             else {
                 ConstraintType.append(tokens[i]);
             }
@@ -147,10 +204,8 @@ public class ScheduledTaskManager {
             values.push(applyOperator(operators.pop(), values.pop(), values.pop()));
         }
 
-        // 最终结果在栈顶
         float ans = values.pop();
-        System.out.println(ans);
-        service.CheckRules(ConstraintType.toString(),ConstraintValue,ConstraintDesciption,new Log(metric,tagJson,timestamp,ans));
+        service.CheckRules(ConstraintType.toString(), ConstraintValue, ConstraintDesciption, new Log(metric, tagJson, timestamp, ans));
     }
 
     // 返回运算符op1和op2的优先级是否小于等于

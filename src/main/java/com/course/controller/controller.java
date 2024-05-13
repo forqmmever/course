@@ -39,7 +39,7 @@ public class controller {
     @GetMapping("/metric/get")
     public List<Log> GetWarningLogAll() {
 
-        return service.GetWarnigLogAll();
+        return service.GetWarningLogAll();
     }
 
     @GetMapping("/constraint/get")

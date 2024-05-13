@@ -6,6 +6,7 @@ import com.sun.javafx.collections.MappingChange;
 
 import java.lang.String;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,7 @@ public class Log {
     private Map<String, String> tags;
     private String description;
     private Date time;
+    private String date;
     public Log(){}
     public Log(String metric, Map<String, String> tags,int timestamp, float value) {
         this.metric = metric;
@@ -152,9 +154,13 @@ public class Log {
         this.time = time;
     }
 
-    public String getTagsJson() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(tags);
+    public String getDate() {
+        date = LocalDateTime.now().toString();
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     @Override
