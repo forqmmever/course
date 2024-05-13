@@ -6,21 +6,23 @@ public class MetricConstraint {
     private String constraintType;
     private float value;
     private String description;
+    private int type;
 
-    public MetricConstraint(int id, String metric, String constraintType, float value, String description) {
+    public MetricConstraint(String metric, String constraintType, float value, String description, int type) {
+        this.metric = metric;
+        this.constraintType = constraintType;
+        this.value = value;
+        this.description = description;
+        this.type = type;
+    }
+
+    public MetricConstraint(int id, String metric, String constraintType, float value, String description, int type) {
         this.id = id;
         this.metric = metric;
         this.constraintType = constraintType;
         this.value = value;
         this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+        this.type = type;
     }
 
     @Override
@@ -31,7 +33,24 @@ public class MetricConstraint {
                 ", constraintType='" + constraintType + '\'' +
                 ", value=" + value +
                 ", description='" + description + '\'' +
+                ", type=" + type +
                 '}';
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getId() {

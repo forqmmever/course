@@ -4,6 +4,7 @@ import com.course.entity.Log;
 import com.course.entity.MetricConstraint;
 import com.course.mapper.Mapper;
 
+import com.course.service.ScheduledTaskManager;
 import com.course.service.Service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,11 @@ class WebApplicationTests {
     @Autowired
     private Service service;
 
+    @Autowired
+    private ScheduledTaskManager manager;
+
     @Test
-    void contextLoads() {
+    void testLink() {
         String url = "jdbc:mysql://localhost:3306/hostlog";
         String username = "root";
         String password = "123456";
@@ -41,9 +45,6 @@ class WebApplicationTests {
             // 如果连接成功，输出连接成功的消息
             System.out.println("数据库连接成功！");
 
-            // 可以在这里执行一些查询操作来验证连接是否正常
-            // ...
-
             // 关闭数据库连接
             connection.close();
         } catch (ClassNotFoundException e) {
@@ -58,9 +59,9 @@ class WebApplicationTests {
     }
 
     @Test
-    public void tesSelect() {
+    public void tesSelectPost() {
 //          System.out.println(mapper.GetMetricConstraint("up"));
-          System.out.println(service.GetPostLog("up", "7273a1ea-0089-4674-b606-b1b8d809d866",1631762560));
+//          System.out.println(service.GetPostLog("up", "7273a1ea-0089-4674-b606-b1b8d809d866",1631762560));
 //        System.out.println(mapper.GetWarningLogAll());
     }
 
@@ -80,10 +81,8 @@ class WebApplicationTests {
         System.out.println(new Date(time));
     }
     @Test void testGetMemory(){
-        String[] MemoryNameList = {"node_memory_Buffers_bytes", "node_memory_Cached_bytes", "node_memory_MemFree_bytes", "node_memory_MemTotal_bytest"};
-        for (String memoryName : MemoryNameList){
-            System.out.println(mapper.GetMemoryLog(memoryName));
-        }
+        System.out.println(mapper.GetConstraintAll(1));
+        System.out.println(mapper.GetConstraintAll(0));
     }
     @Test
     public void testGetreceive(){
@@ -98,9 +97,14 @@ class WebApplicationTests {
             System.out.println(item);
         }
     }
-    @Test void testUpdate(){
-        MetricConstraint metricConstraint = new MetricConstraint(1, "up", "=", 0, "宕机");
+    @Test
+    public void testUpdate(){
+        MetricConstraint metricConstraint = new MetricConstraint("up", "=", 0, "宕机",0);
         mapper.UpdateConstraint("up",metricConstraint);
     }
 
+    @Test
+    public void testEvalute(){
+        manager.executeTask();
+    }
 }

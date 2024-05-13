@@ -55,6 +55,13 @@ public class Log {
         this.tagJson = tagJson;
     }
 
+    public Log(String metric, String tagJson, int timestamp, float value) {
+        this.metric = metric;
+        this.tagJson = tagJson;
+        this.timestamp = timestamp;
+        this.value = value;
+    }
+
     public String getMetric() {
         return metric;
     }

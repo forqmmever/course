@@ -1,8 +1,5 @@
 package com.course.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MemoryLog {
 
     private int node_memory_Buffers_bytes;

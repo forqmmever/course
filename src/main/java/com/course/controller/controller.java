@@ -45,18 +45,16 @@ public class controller {
     @GetMapping("/constraint/get")
     @ResponseBody
     public List<MetricConstraint> getConstraintAll() {
-        return service.GetConstraintAll();
+        return service.GetConstraintAll(0);
     }
 
     @PutMapping("/constraint/update/{metric}")
     public Result UpdateConstraint(@PathVariable String metric, @RequestBody MetricConstraint newData) {
-//        System.out.println(newData);
         service.UpdateConstraint(metric,newData);
         return new Result(UUID.randomUUID().toString(), "ok",Http_OK);
     }
     @DeleteMapping("/constraint/delete/{metric}")
     public Result DeleteConstraint(@PathVariable String metric){
-//        System.out.println(metric);
         service.DeletConstraint(metric);
         return new Result(UUID.randomUUID().toString(), "ok",Http_OK);
     }
@@ -64,13 +62,11 @@ public class controller {
     @PutMapping("/task/put")
     public Result ChangeScheduledTask(@RequestBody TaskSet taskSet){
         service.ChangeTaskSet(taskSet.getInterval(),taskSet.getDate1());
-//        System.out.println(taskSet);
         return new Result(UUID.randomUUID().toString(), "ok",Http_OK);
     }
 
     @PutMapping("/constraint/new")
     public Result AddConstraint(@RequestBody MetricConstraint metricConstraint){
-//        System.out.println(metricConstraint);
         service.AddConstraint(metricConstraint);
         return new Result(UUID.randomUUID().toString(), "ok",Http_OK);
     }

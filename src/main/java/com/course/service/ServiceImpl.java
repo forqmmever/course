@@ -22,10 +22,7 @@ public class ServiceImpl implements Service {
     private ScheduledTaskManager manager;
 
     @Override
-    public boolean CheckRules(MetricConstraint metricConstraint, Log log) {
-        String ConstraintType = metricConstraint.getConstraintType();
-        float ConstraintValue = metricConstraint.getValue();
-        String ConstraintDesciption = metricConstraint.getDescription();
+    public boolean CheckRules(String ConstraintType, float ConstraintValue,String ConstraintDesciption, Log log) {
 
         float value = log.getValue();
 
@@ -49,20 +46,22 @@ public class ServiceImpl implements Service {
                 break;
         }
 
-        log.setTime(new Date());
-        log.setDescription(ConstraintDesciption);
-        if (flag) SaveWarningLog(log);
+        if (flag) {
+            log.setTime(new Date());
+            log.setDescription(ConstraintDesciption);
+            SaveWarningLog(log);
+        }
         return flag;
     }
 
-    public String SavePostLog(Log postLog) throws JsonProcessingException {
+    public String SavePostLog(Log postLog){
         mapper.SavePostLog(postLog);
 
         String metric = postLog.getMetric();
 
         MetricConstraint constraint = mapper.GetMetricConstraint(metric);
         if (constraint != null) {
-            if (CheckRules(constraint, postLog)) {
+            if (CheckRules(constraint.getConstraintType(),constraint.getValue(),constraint.getDescription(), postLog)) {
                 return constraint.getDescription();
             }
         }
@@ -71,10 +70,10 @@ public class ServiceImpl implements Service {
 
 
     @Override
-    public boolean GetPostLog(String metric, String instanceId, int timestamp) {
-        String keyword = "%\"" + instanceId + "\"%";
-        System.out.println(mapper.GetPostLog(metric, keyword,timestamp));
-        return true;
+    public Log GetPostLog(String metric) {
+//        System.out.println(mapper.GetPostLog(metric));
+
+        return mapper.GetPostLog(metric);
     }
 
     @Override
@@ -120,8 +119,8 @@ public class ServiceImpl implements Service {
     }
 
     @Override
-    public List<MetricConstraint> GetConstraintAll() {
-        return mapper.GetConstraintAll();
+    public List<MetricConstraint> GetConstraintAll(int type) {
+        return mapper.GetConstraintAll(type);
     }
 
     @Override
@@ -131,12 +130,12 @@ public class ServiceImpl implements Service {
         return true;
     }
 
-    @PostConstruct
-    public void StartTask() {
-        Long INF =  10000000000L * 1000L;
-        Integer startTime = mapper.GetStartTime();
-        //如果数据为空将开始时间设为正无穷
-        manager.ChangeInitialDelay(new Date(startTime == null? INF: startTime * 1000L));
-    }
+//    @PostConstruct
+//    public void StartTask() {
+//        Long INF =  10000000000L * 1000L;
+//        Integer startTime = mapper.GetStartTime();
+//        //如果数据为空将开始时间设为正无穷
+//        manager.ChangeInitialDelay(new Date(startTime == null? INF: startTime * 1000L));
+//    }
 
 }
