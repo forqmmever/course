@@ -28,36 +28,6 @@ class WebApplicationTests {
     @Autowired
     private ScheduledTaskManager manager;
 
-    @Test
-    void testLink() {
-        String url = "jdbc:mysql://localhost:3306/hostlog";
-        String username = "root";
-        String password = "123456";
-
-        // 尝试连接数据库
-        try {
-            // 加载数据库驱动程序
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            // 建立数据库连接
-            Connection connection = DriverManager.getConnection(url, username, password);
-
-            // 如果连接成功，输出连接成功的消息
-            System.out.println("数据库连接成功！");
-
-            // 关闭数据库连接
-            connection.close();
-        } catch (ClassNotFoundException e) {
-            // 如果找不到数据库驱动程序类，输出错误信息
-            System.err.println("找不到数据库驱动程序类！");
-            e.printStackTrace();
-        } catch (SQLException e) {
-            // 如果连接数据库失败，输出错误信息
-            System.err.println("连接数据库失败！");
-            e.printStackTrace();
-        }
-    }
-
 
     @Test
     public void testTime() throws ParseException {
