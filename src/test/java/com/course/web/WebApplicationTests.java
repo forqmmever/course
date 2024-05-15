@@ -58,12 +58,6 @@ class WebApplicationTests {
         }
     }
 
-    @Test
-    public void tesSelectPost() {
-//          System.out.println(mapper.GetMetricConstraint("up"));
-//          System.out.println(service.GetPostLog("up", "7273a1ea-0089-4674-b606-b1b8d809d866",1631762560));
-//        System.out.println(mapper.GetWarningLogAll());
-    }
 
     @Test
     public void testTime() throws ParseException {
@@ -73,12 +67,6 @@ class WebApplicationTests {
         long initialDelay = startDate.getTime() - System.currentTimeMillis();
         System.out.println(startDate.getTime());
         System.out.println(initialDelay);
-    }
-    @Test
-    public void testGettime(){
-        long time = mapper.GetStartTime() * 1000L;
-        System.out.println(time);
-        System.out.println(new Date(time));
     }
     @Test void testGetMemory(){
         System.out.println(mapper.GetConstraintAll(1));

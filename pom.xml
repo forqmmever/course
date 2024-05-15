@@ -8,9 +8,9 @@
         <version>2.5.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.itheima</groupId>
-    <artifactId>init</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <groupId>com.ksyun</groupId>
+    <artifactId>web</artifactId>
+    <version>1.0.0</version>
     <name>springboot_09_ssm</name>
     <description>Demo project for Spring Boot</description>
     <properties>
