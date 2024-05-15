@@ -40,7 +40,7 @@ public interface Mapper {
     @Select("select * from postlog")
     public List<Log> GetPostLogAll();
 
-    @Update("update metricconstraint set constraintType = #{newData.constraintType},value = #{newData.value},description = #{newData.description},type = #{type} where metric = #{metric}")
+    @Update("update metricconstraint set constraintType = #{newData.constraintType},value = #{newData.value},description = #{newData.description},type = #{newData.type} where metric = #{metric}")
     public void UpdateConstraint(String metric, MetricConstraint newData);
 
     @Delete("delete from metricconstraint where metric = #{metric}")

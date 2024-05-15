@@ -6,11 +6,13 @@ import com.course.entity.MetricConstraint;
 //
 //import com.course.pojo.WarningLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.List;
 
+@org.springframework.cache.annotation.EnableCaching
 @org.springframework.stereotype.Service
 public class ServiceImpl implements Service {
 
@@ -27,11 +29,21 @@ public class ServiceImpl implements Service {
         boolean flag = false;
 
         switch (ConstraintType) {
-            case "=": flag = (value == ConstraintValue);break;
-            case ">": flag = (value > ConstraintValue);break;
-            case "<": flag = (value < ConstraintValue);break;
-            case ">=": flag = (value >= ConstraintValue);break;
-            case "<=": flag = (value <= ConstraintValue);break;
+            case "=":
+                flag = (value == ConstraintValue);
+                break;
+            case ">":
+                flag = (value > ConstraintValue);
+                break;
+            case "<":
+                flag = (value < ConstraintValue);
+                break;
+            case ">=":
+                flag = (value >= ConstraintValue);
+                break;
+            case "<=":
+                flag = (value <= ConstraintValue);
+                break;
         }
 
         if (flag) {
@@ -56,20 +68,21 @@ public class ServiceImpl implements Service {
         return "";
     }
 
-
     @Override
+    @Cacheable(value = "latestLogCache", key = "#metric")
     public Log GetLatestLog(String metric) {
-//        System.out.println(mapper.GetPostLog(metric));
 
         return mapper.GetLatestLog(metric);
     }
 
     @Override
+    @Cacheable(value = "logValueCache", key = "#metric + '-' + #timestamp")
     public float GetLogValue(String metric, int timestamp) {
         return mapper.GetLogValue(metric, timestamp);
     }
 
     @Override
+    @Cacheable(value = "metricConstraintCache", key = "#metric")
     public MetricConstraint GetMetricConstraint(String metric) {
         return mapper.GetMetricConstraint(metric);
     }

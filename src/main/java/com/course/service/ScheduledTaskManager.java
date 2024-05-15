@@ -57,12 +57,12 @@ public class ScheduledTaskManager {
 
     // 定时任务执行的方法
     private void executeTask() {
-        System.out.println("当前时间：" + new Date());
+//        System.out.println("当前时间：" + new Date());
         List<MetricConstraint> metricConstraintList = service.GetConstraintAll(1);
         if (metricConstraintList == null) return;
         int nowTimestamp = 0;
         for (MetricConstraint constraint : metricConstraintList) {
-            nowTimestamp=  CheckConstraint(constraint);
+            nowTimestamp = CheckConstraint(constraint);
         }
         LatestTimestamp = nowTimestamp;
 

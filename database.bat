@@ -5,7 +5,7 @@ set MYSQL_HOME=C:\Program Files\MySQL\MySQL Server 8.0\bin
 
 rem 设置 MySQL 的用户名和密码
 set MYSQL_USER=root
-set MYSQL_PASSWORD=password
+set MYSQL_PASSWORD=123456
 
 rem 设置数据库名称
 set DATABASE_NAME=hostlog
