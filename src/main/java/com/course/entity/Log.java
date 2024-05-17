@@ -22,7 +22,15 @@ public class Log {
     private Date time;
     private String date;
     public Log(){}
-    public Log(String metric, Map<String, String> tags,int timestamp, float value) {
+
+//    public Log(String metric, int timestamp, float value, Map<String, String> tags) {
+//        this.metric = metric;
+//        this.timestamp = timestamp;
+//        this.value = value;
+//        this.tags = tags;
+//    }
+
+    public Log(String metric, Map<String, String> tags, int timestamp, float value) {
         this.metric = metric;
         this.timestamp = timestamp;
         this.value = value;
@@ -103,18 +111,18 @@ public class Log {
 
     public void setTags(Map<String, String> tags) {
         this.tags = tags;
-        if (tagJson.isEmpty()){
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                tagJson = mapper.writeValueAsString(tags);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        if (tagJson.isEmpty()){
+//            ObjectMapper mapper = new ObjectMapper();
+//            try {
+//                tagJson = mapper.writeValueAsString(tags);
+//            } catch (JsonProcessingException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
     }
 
     public String getTagJson() {
-        if (tagJson.isEmpty() && tags != null){
+        if (tagJson == null && tags != null){
             ObjectMapper mapper = new ObjectMapper();
             try {
                 return mapper.writeValueAsString(tags);
@@ -127,15 +135,15 @@ public class Log {
 
     public void setTagJson(String tagJson) {
         this.tagJson = tagJson;
-        if (tags == null) {
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                tags = new HashMap<>();
-                tags = mapper.readValue(tagJson, Map.class);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        if (tags == null) {
+//            ObjectMapper mapper = new ObjectMapper();
+//            try {
+//                tags = new HashMap<>();
+//                tags = mapper.readValue(tagJson, Map.class);
+//            } catch (JsonProcessingException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
     }
 
     public String getDescription() {
