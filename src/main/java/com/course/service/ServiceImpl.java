@@ -30,7 +30,7 @@ public class ServiceImpl implements Service {
         boolean flag = false;
 
         switch (ConstraintType) {
-            case "=":
+            case "==":
                 flag = (value == ConstraintValue);
                 break;
             case ">":
