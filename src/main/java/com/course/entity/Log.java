@@ -2,7 +2,6 @@ package com.course.entity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.javafx.collections.MappingChange;
 
 import java.io.Serializable;
 import java.lang.String;
@@ -22,7 +21,9 @@ public class Log implements Serializable {
     private String description;
     private Date time;
     private String date;
-    public Log(){}
+
+    public Log() {
+    }
 
     public Log(String metric, Map<String, String> tags, int timestamp, float value) {
         this.metric = metric;
@@ -50,7 +51,6 @@ public class Log implements Serializable {
         this.description = description;
         this.time = time;
     }
-
 
 
     public Log(int timestamp, float value, String tagJson) {
@@ -91,7 +91,7 @@ public class Log implements Serializable {
     }
 
     public Map<String, String> getTags() {
-        if (tags == null && !tagJson.isEmpty()){
+        if (tags == null && !tagJson.isEmpty()) {
             ObjectMapper mapper = new ObjectMapper();
             try {
                 tags = new HashMap<>();
@@ -116,7 +116,7 @@ public class Log implements Serializable {
     }
 
     public String getTagJson() {
-        if (tagJson == null && tags != null){
+        if (tagJson == null && tags != null) {
             ObjectMapper mapper = new ObjectMapper();
             try {
                 return mapper.writeValueAsString(tags);

@@ -18,7 +18,7 @@ public interface Service {
 
     public Log GetLatestLog(String metric);
 
-    public float GetLogValue(String metric,int timestamp);
+    public float GetLogValue(String metric, int timestamp);
 
     public List<Float> GetLogValueByRage(String metric, int timestamp, int rage);
 

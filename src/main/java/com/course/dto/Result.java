@@ -1,7 +1,5 @@
 package com.course.dto;
 
-import java.util.Map;
-
 public class Result {
     private String requestId;
     private String msg;

@@ -2,16 +2,13 @@ package com.course.service;
 
 import com.course.dto.AlterResult;
 import com.course.dto.LogResult;
-import com.course.dto.QueryResult;
 import com.course.mapper.Mapper;
 import com.course.entity.Log;
 import com.course.entity.MetricConstraint;
-//
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.Array;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -142,14 +139,14 @@ public class ServiceImpl implements Service {
 
     @Override
     public LogResult QueryLog(int StartTimestamp, int EndTimestamp) {
-        List<LogResult.Data> datas = mapper.GetLogByTime(StartTimestamp,EndTimestamp);
-        return new LogResult(UUID.randomUUID().toString(), datas.size(),datas);
+        List<LogResult.Data> datas = mapper.GetLogByTime(StartTimestamp, EndTimestamp);
+        return new LogResult(UUID.randomUUID().toString(), datas.size(), datas);
     }
 
     @Override
     public AlterResult QueryAlter(int StartTimestamp, int EndTimestamp) {
-        List<AlterResult.Data> datas = mapper.GetAlterByTime(StartTimestamp,EndTimestamp);
-        return new AlterResult(UUID.randomUUID().toString(), datas.size(),datas);
+        List<AlterResult.Data> datas = mapper.GetAlterByTime(StartTimestamp, EndTimestamp);
+        return new AlterResult(UUID.randomUUID().toString(), datas.size(), datas);
     }
 
     @PostConstruct

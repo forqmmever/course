@@ -8,7 +8,8 @@ public class MetricConstraint {
     private String description;
     private int type;
 
-    public MetricConstraint(){}
+    public MetricConstraint() {
+    }
 
     public MetricConstraint(String metric, String constraintType, float value, String description, int type) {
         this.metric = metric;

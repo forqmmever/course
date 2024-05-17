@@ -63,7 +63,6 @@ public class controller {
         return ResponseEntity.status(Http_OK).body(service.QueryAlter(StartTimestamp, EndTimestamp));
     }
 
-
     @GetMapping("/alter/get")
     public List<Log> getWarningLogAll() {
         return service.GetWarningLogAll();

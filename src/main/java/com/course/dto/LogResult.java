@@ -1,7 +1,5 @@
 package com.course.dto;
 
-
-import java.util.Arrays;
 import java.util.List;
 
 public class LogResult extends QueryResult {

@@ -10,9 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,34 +35,40 @@ class WebApplicationTests {
         System.out.println(startDate.getTime());
         System.out.println(initialDelay);
     }
-    @Test void testGetMemory(){
+
+    @Test
+    void testGetMemory() {
         System.out.println(mapper.GetConstraintAll(1));
         System.out.println(mapper.GetConstraintAll(0));
     }
+
     @Test
-    public void testGetreceive(){
+    public void testGetreceive() {
         System.out.println((mapper.GetNetworkReceive(60)));
         System.out.println((mapper.GetNetworkReceive(0)));
     }
+
     @Test
-    public void testGetALL(){
+    public void testGetALL() {
         List<Log> ans = mapper.GetWarningLogAll();
-        for (Log item : ans){
+        for (Log item : ans) {
 //            System.out.println(item.getTags());
             System.out.println(item);
         }
     }
+
     @Test
-    public void testUpdate(){
-        MetricConstraint metricConstraint = new MetricConstraint("up", "=", 0, "宕机",0);
-        mapper.UpdateConstraint("up",metricConstraint);
+    public void testUpdate() {
+        MetricConstraint metricConstraint = new MetricConstraint("up", "=", 0, "宕机", 0);
+        mapper.UpdateConstraint("up", metricConstraint);
     }
+
     @Test
-    public void testQuery(){
+    public void testQuery() {
         int StartTimestamp = 1631762560;
         int EndTimestamp = 1631762720;
-//        System.out.println(service.QueryLog(StartTimestamp,EndTimestamp));
+        System.out.println(service.QueryLog(StartTimestamp,EndTimestamp));
         System.out.println("-----------------------------");
-        System.out.println(service.QueryAlter(StartTimestamp,EndTimestamp));
+        System.out.println(service.QueryAlter(StartTimestamp, EndTimestamp));
     }
 }

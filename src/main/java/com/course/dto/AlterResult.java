@@ -1,9 +1,8 @@
 package com.course.dto;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class AlterResult extends QueryResult{
+public class AlterResult extends QueryResult {
     List<Data> data;
 
     public AlterResult(String requestId, int total, List<Data> data) {
@@ -28,7 +27,7 @@ public class AlterResult extends QueryResult{
         this.data = data;
     }
 
-    public static class Data{
+    public static class Data {
         private String condition;
         private int timestamp;
         private float value;

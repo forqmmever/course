@@ -1,10 +1,5 @@
 package com.course.dto;
 
-
-
-
-import java.util.Arrays;
-
 public class QueryResult {
 
     private String requestId;
