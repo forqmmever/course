@@ -46,8 +46,6 @@ public class controller {
         int StartTimestamp = (int) (StartDate.getTime() / 1000);
         Date EndDate = dateFormat.parse(request.getEnd());
         int EndTimestamp = (int) (EndDate.getTime() / 1000);
-        LogResult L =service.QueryLog(StartTimestamp, EndTimestamp);
-        System.out.println(L);
         return ResponseEntity.status(Http_OK).body(service.QueryLog(StartTimestamp, EndTimestamp));
     }
 
@@ -58,8 +56,6 @@ public class controller {
         int StartTimestamp = (int) (StartDate.getTime() / 1000);
         Date EndDate = dateFormat.parse(request.getEnd());
         int EndTimestamp = (int) (EndDate.getTime() / 1000);
-        AlterResult A = service.QueryAlter(StartTimestamp, EndTimestamp);
-        System.out.println(A);
         return ResponseEntity.status(Http_OK).body(service.QueryAlter(StartTimestamp, EndTimestamp));
     }
 
