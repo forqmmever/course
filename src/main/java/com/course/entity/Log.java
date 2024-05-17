@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.javafx.collections.MappingChange;
 
+import java.io.Serializable;
 import java.lang.String;
 
 import java.time.LocalDateTime;
@@ -11,7 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Log {
+public class Log implements Serializable {
     private int id;
     private String metric;
     private String tagJson;
@@ -22,13 +23,6 @@ public class Log {
     private Date time;
     private String date;
     public Log(){}
-
-//    public Log(String metric, int timestamp, float value, Map<String, String> tags) {
-//        this.metric = metric;
-//        this.timestamp = timestamp;
-//        this.value = value;
-//        this.tags = tags;
-//    }
 
     public Log(String metric, Map<String, String> tags, int timestamp, float value) {
         this.metric = metric;

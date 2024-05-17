@@ -60,5 +60,12 @@ class WebApplicationTests {
         MetricConstraint metricConstraint = new MetricConstraint("up", "=", 0, "宕机",0);
         mapper.UpdateConstraint("up",metricConstraint);
     }
-
+    @Test
+    public void testQuery(){
+        int StartTimestamp = 1631762560;
+        int EndTimestamp = 1631762720;
+//        System.out.println(service.QueryLog(StartTimestamp,EndTimestamp));
+        System.out.println("-----------------------------");
+        System.out.println(service.QueryAlter(StartTimestamp,EndTimestamp));
+    }
 }

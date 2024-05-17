@@ -1,5 +1,8 @@
 package com.course.service;
 
+import com.course.dto.AlterResult;
+import com.course.dto.LogResult;
+import com.course.dto.QueryResult;
 import com.course.entity.Log;
 import com.course.entity.MetricConstraint;
 import com.course.entity.TaskSet;
@@ -17,7 +20,7 @@ public interface Service {
 
     public float GetLogValue(String metric,int timestamp);
 
-    public List<Float> GetLogValueRage(String metric, int timestamp, int rage);
+    public List<Float> GetLogValueByRage(String metric, int timestamp, int rage);
 
     public MetricConstraint GetMetricConstraint(String metric);
 
@@ -38,4 +41,8 @@ public interface Service {
     public boolean ChangeTaskSet(int interval, Date date);
 
     public List<Log> GetPostLogAll();
+
+    public LogResult QueryLog(int StartTimestamp, int EndTimestamp);
+
+    public AlterResult QueryAlter(int StartTimestamp, int EndTimestamp);
 }

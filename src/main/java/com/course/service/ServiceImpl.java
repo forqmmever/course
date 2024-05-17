@@ -1,16 +1,20 @@
 package com.course.service;
 
+import com.course.dto.AlterResult;
+import com.course.dto.LogResult;
+import com.course.dto.QueryResult;
 import com.course.mapper.Mapper;
 import com.course.entity.Log;
 import com.course.entity.MetricConstraint;
 //
-//import com.course.pojo.WarningLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 
 import javax.annotation.PostConstruct;
+import java.lang.reflect.Array;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @org.springframework.cache.annotation.EnableCaching
 @org.springframework.stereotype.Service
@@ -115,8 +119,8 @@ public class ServiceImpl implements Service {
     }
 
     @Override
-    public List<Float> GetLogValueRage(String metric, int timestamp, int rage) {
-        return mapper.GetLogValueRage(metric, timestamp, rage);
+    public List<Float> GetLogValueByRage(String metric, int timestamp, int rage) {
+        return mapper.GetLogValueByRage(metric, timestamp, rage);
     }
 
     @Override
@@ -134,6 +138,18 @@ public class ServiceImpl implements Service {
     @Override
     public List<Log> GetPostLogAll() {
         return mapper.GetPostLogAll();
+    }
+
+    @Override
+    public LogResult QueryLog(int StartTimestamp, int EndTimestamp) {
+        List<LogResult.Data> datas = mapper.GetLogByTime(StartTimestamp,EndTimestamp);
+        return new LogResult(UUID.randomUUID().toString(), datas.size(),datas);
+    }
+
+    @Override
+    public AlterResult QueryAlter(int StartTimestamp, int EndTimestamp) {
+        List<AlterResult.Data> datas = mapper.GetAlterByTime(StartTimestamp,EndTimestamp);
+        return new AlterResult(UUID.randomUUID().toString(), datas.size(),datas);
     }
 
     @PostConstruct

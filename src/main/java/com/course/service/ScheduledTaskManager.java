@@ -21,7 +21,7 @@ public class ScheduledTaskManager {
     private ScheduledFuture<?> scheduledFuture;
     private static int LatestTimestamp = -1;
 
-    private int interval = 30000;
+    private int interval = 2000;
 
     public ScheduledTaskManager(Service service, TaskScheduler taskScheduler) {
         this.service = service;
@@ -57,7 +57,7 @@ public class ScheduledTaskManager {
 
     // 定时任务执行的方法
     private void executeTask() {
-//        System.out.println("当前时间：" + new Date());
+        System.out.println("当前时间：" + new Date());
         List<MetricConstraint> metricConstraintList = service.GetConstraintAll(1);
         if (metricConstraintList == null) return;
         int nowTimestamp = 0;
@@ -65,10 +65,10 @@ public class ScheduledTaskManager {
             nowTimestamp = CheckConstraint(constraint);
         }
         LatestTimestamp = nowTimestamp;
-
     }
 
     private int CheckConstraint(MetricConstraint metricConstraint) {
+//        System.out.println(new Date());
         String metric = metricConstraint.getMetric();
         String expression = metricConstraint.getConstraintType();
         StringBuilder ConstraintType = new StringBuilder();
@@ -135,15 +135,14 @@ public class ScheduledTaskManager {
 
                     //第一次读取Log获取主机名 时间戳
                     if (timestamp == 0) {
-                        Log log = service.GetLatestLog(metric + "_" + strMetric);
+                        Log log = service.GetLatestLog(strMetric.toString());
                         timestamp = log.getTimestamp();
                         //判断该时间戳数据是否检查过
                         if (timestamp == LatestTimestamp) return timestamp;
                         tagJson = log.getTagJson();
                     }
 
-                    List<Float> ValueList = new ArrayList<>(service.GetLogValueRage(metric + "_" + strMetric, timestamp, rage));
-
+                    List<Float> ValueList = new ArrayList<>(service.GetLogValueByRage(strMetric.toString(), timestamp, rage));
                     switch (sb.toString()) {
                         case "max":
                             num = Aggregation.MaxValue(ValueList);
@@ -166,13 +165,13 @@ public class ScheduledTaskManager {
 
                 } else {
                     if (timestamp == 0) {
-                        Log log = service.GetLatestLog(metric + "_" + sb);
+                        Log log = service.GetLatestLog(sb.toString());
                         timestamp = log.getTimestamp();
                         if (LatestTimestamp == timestamp) return timestamp;
                         tagJson = log.getTagJson();
                         num = log.getValue();
                     } else {
-                        num = service.GetLogValue(metric + "_" + sb, timestamp);
+                        num = service.GetLogValue(sb.toString(), timestamp);
                     }
                     i--; // 因为for循环还会执行一次i++
                 }

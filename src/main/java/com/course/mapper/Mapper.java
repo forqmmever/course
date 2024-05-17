@@ -1,11 +1,10 @@
 package com.course.mapper;
 
+import com.course.dto.AlterResult;
+import com.course.dto.LogResult;
 import com.course.entity.Log;
 import com.course.entity.MetricConstraint;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -46,15 +45,21 @@ public interface Mapper {
     @Delete("delete from metricconstraint where metric = #{metric}")
     public void DeleteConstraint(String metric);
 
-    @Select("select COUNT(*) from postlog")
-    public int CountPostLog();
-
     @Select("select timestamp from postlog order by timestamp desc limit 1")
     public Integer GetStartTime();
+
+    @Select("select constraintType from metricconstraint where description = #{description}")
+    public String GetConstraintTypeByDesc(String description);
+
+    @Select("select * from postlog where timestamp >= #{StartTimestamp} and timestamp <= #{EndTimestamp}")
+    public List<LogResult.Data> GetLogByTime(int StartTimestamp, int EndTimestamp);
+
+    @Select("select CONCAT(w.metric,constraintType,m.value) 'condition',w.timestamp,w.value from warninglog w left join metricconstraint m on w.description = m.description where timestamp >= #{StartTimestamp} and timestamp <= #{EndTimestamp}")
+    public List<AlterResult.Data> GetAlterByTime(int StartTimestamp, int EndTimestamp);
 
     @Select("select postlog.timestamp,postlog.value,postlog.tagJson from postlog,(select timestamp,tagJson from postlog order by timestamp desc limit 1) as t where metric ='node_network_receive_bytes_total' and postlog.timestamp >= t.timestamp - #{rage} and postlog.tagJson= t.tagJson limit 1;")
     public Log GetNetworkReceive(int rage);
 
     @Select("select value from postlog where metric = #{metric} and timestamp >= #{timestamp} - #{rage} and timestamp <= #{timestamp}")
-    public List<Float> GetLogValueRage(String metric, int timestamp, int rage);
+    public List<Float> GetLogValueByRage(String metric, int timestamp, int rage);
 }

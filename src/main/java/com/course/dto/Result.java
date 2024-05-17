@@ -1,24 +1,18 @@
 package com.course.dto;
 
+import java.util.Map;
+
 public class Result {
     private String requestId;
     private String msg;
 
-    private int code;
 
-    public Result(String requestId, String msg, int code) {
+    public Result(String requestId, String msg) {
         this.requestId = requestId;
         this.msg = msg;
-        this.code = code;
     }
 
-    public int getCode() {
-        return code;
-    }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
 
     public String getRequestId() {
         return requestId;
