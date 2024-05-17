@@ -45,6 +45,9 @@ public class ServiceImpl implements Service {
             case "<=":
                 flag = (value <= ConstraintValue);
                 break;
+            case "!=":
+                flag = (value != ConstraintValue);
+                break;
         }
 
         if (flag) {
