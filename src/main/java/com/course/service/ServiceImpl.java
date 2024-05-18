@@ -24,11 +24,8 @@ public class ServiceImpl implements Service {
 
     @Override
     public boolean CheckRules(String ConstraintType, float ConstraintValue, String ConstraintDesciption, Log log) {
-
         float value = log.getValue();
-
         boolean flag = false;
-
         switch (ConstraintType) {
             case "==":
                 flag = (value == ConstraintValue);
@@ -49,7 +46,6 @@ public class ServiceImpl implements Service {
                 flag = (value != ConstraintValue);
                 break;
         }
-
         if (flag) {
             log.setTime(new Date());
             log.setDescription(ConstraintDesciption);

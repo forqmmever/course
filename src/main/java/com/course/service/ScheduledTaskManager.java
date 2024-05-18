@@ -14,50 +14,41 @@ import java.util.concurrent.ScheduledFuture;
 public class ScheduledTaskManager {
     @Autowired
     private Service service;
-    @Autowired
-    private TaskScheduler taskScheduler;
-    private final String[] MemoryNameList = {"node_memory_Buffers_bytes", "node_memory_Cached_bytes", "node_memory_MemFree_bytes"};
     private Date start;
     private ScheduledFuture<?> scheduledFuture;
+    @Autowired
+    private TaskScheduler taskScheduler;
     private static int LatestTimestamp = -1;
-
     private int interval = 30000;
-
     public ScheduledTaskManager(Service service, TaskScheduler taskScheduler) {
         this.service = service;
         this.taskScheduler = taskScheduler;
     }
-
     // 启动定时任务
     public void StartTask() {
         scheduledFuture = taskScheduler.scheduleAtFixedRate(
                 this::executeTask, start, interval);
     }
-
     // 停止定时任务
     public void StopTask() {
         if (scheduledFuture != null && !scheduledFuture.isCancelled()) {
             scheduledFuture.cancel(true);
         }
     }
-
     // 动态修改定时任务的参数
     public void ChangeInterval(int Interval) {
         StopTask(); // 先停止定时任务
         interval = Interval * 1000; // 修改参数
         StartTask(); // 重新启动定时任务
     }
-
     public void ChangeInitialDelay(Date Start) {
         StopTask(); // 先停止定时任务
         start = Start; // 修改参数
         StartTask(); // 重新启动定时任务
     }
-
-
     // 定时任务执行的方法
     private void executeTask() {
-//        System.out.println("当前时间：" + new Date());
+        System.out.println("当前时间：" + new Date());
         List<MetricConstraint> metricConstraintList = service.GetConstraintAll(1);
         if (metricConstraintList == null) return;
         int nowTimestamp = 0;
@@ -66,7 +57,6 @@ public class ScheduledTaskManager {
         }
         LatestTimestamp = nowTimestamp;
     }
-
     private int CheckConstraint(MetricConstraint metricConstraint) {
         String metric = metricConstraint.getMetric();
         String expression = metricConstraint.getConstraintType();
@@ -208,7 +198,6 @@ public class ScheduledTaskManager {
         service.CheckRules(ConstraintType.toString(), ConstraintValue, ConstraintDesciption, new Log(metric, tagJson, timestamp, ans));
         return timestamp;
     }
-
     // 返回运算符op1和op2的优先级是否小于等于
     private static boolean hasPrecedence(char op1, char op2) {
         if (op2 == '(' || op2 == ')')
@@ -217,7 +206,6 @@ public class ScheduledTaskManager {
             return false;
         return true;
     }
-
     // 应用运算符op到操作数a和b
     private static float applyOperator(char op, float b, float a) {
         switch (op) {
